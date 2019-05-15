@@ -170,6 +170,10 @@
 				text-align: center;
 				margin:0 auto;
 			}
+			.bottom-nav .item .item-wrap{
+				display: flex;
+				justify-content: center;
+			}
 			.icon-text {
 				position: absolute;
 				top: 25px;
@@ -301,8 +305,8 @@
 			</div>
 
 			<!-- 字号及颜色控制 -->
-			<div class="nav-pannel-bk" style="display:none"></div>
-			<div class="nav-pannel" id="font-container" style="display:none">
+			<div class="nav-pannel-bk font-content" style="display:none"></div>
+			<div class="nav-pannel font-content" id="font_container" style="display:none">
 				<div class="child-mod">
 					<span>字号</span>
 					<button id="large-font" class="font-size-button">大</button>
@@ -378,7 +382,10 @@
 
 				var Dom = {
 					top_nav:$("#top-nav"),
-					bottom_nav:$(".bottom_nav")
+					bottom_nav:$(".bottom_nav"),
+					// 字号及颜色控制根节点
+					font_content:$(".font-content"),
+					font_size_swith_button:$('#font_button')
 				}
 
 				var Win = $(window);
@@ -402,6 +409,8 @@
 					// zepto tap (扩展事件)
 					// 安卓4.0 click会有演示 300ms
 					// 安卓4.0以后 click正常
+
+					//唤起底部导航和顶部导航
 					$('#action-mid').click(function(){
 						if (Dom.top_nav.css('display') == "none") {
 							Dom.bottom_nav.show();
@@ -409,12 +418,39 @@
 						}else{
 							Dom.bottom_nav.hide();
 							Dom.top_nav.hide();
+							Dom.font_content.hide();
+							Dom.font_size_swith_button.removeClass("current");
 						}
 					});
 
+					//换出字体
+					Dom.font_size_swith_button.click(function() {
+						console.log(Dom.font_content)
+
+						if(Dom.font_content.css('display') == 'none'){
+							Dom.font_content.show();
+							Dom.font_size_swith_button.addClass("current");
+						}else{
+							Dom.font_content.hide();
+							Dom.font_size_swith_button.removeClass("current");
+						}
+					});
+
+					// 控制字体大小
+					// 增大字体
+					$('#large-font').click(function(){});
+					// 减小字体
+					$('#small-font').click(function(){});
+
+
+
+
+					//滚动隐藏导航
 					Win.scroll(function() {						
 							Dom.bottom_nav.hide();
-							Dom.top_nav.hide();						
+							Dom.top_nav.hide();	
+							Dom.font_content.hide();	
+							Dom.font_size_swith_button.removeClass("current");				
 					});
 				}
 
