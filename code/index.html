@@ -369,7 +369,7 @@
 					//设置本地会话时，避免和其他的key重复导致被覆盖
 					var prefix = "html5_reader_"; 
 					var StorageGetter = function(key) {
-						return localStorage.getItem();
+						return localStorage.getItem(prefix + key);
 					}
 					var StorageSetter = function(key,val){
 						return localStorage.setItem(prefix + key,val);
@@ -385,11 +385,17 @@
 					bottom_nav:$(".bottom_nav"),
 					// 字号及颜色控制根节点
 					font_content:$(".font-content"),
-					font_size_swith_button:$('#font_button')
+					font_size_swith_button:$('#font_button'),
+					night_button
 				}
 
 				var Win = $(window);
 				var Doc = $(document);
+				var initFontSize = parseInt(Util.StorageGetter('font_size'));
+				if (!initFontSize) {
+					initFontSize = 14;
+				}
+				$('#fiction_container').css("font-size", initFontSize);
 
 				function main() {
 					//整个函数的入口函数
@@ -425,8 +431,6 @@
 
 					//换出字体
 					Dom.font_size_swith_button.click(function() {
-						console.log(Dom.font_content)
-
 						if(Dom.font_content.css('display') == 'none'){
 							Dom.font_content.show();
 							Dom.font_size_swith_button.addClass("current");
@@ -438,9 +442,23 @@
 
 					// 控制字体大小
 					// 增大字体
-					$('#large-font').click(function(){});
+					$('#large-font').click(function(){
+						if (initFontSize > 20) {
+							return
+						}
+						initFontSize += 1;
+						$('#fiction_container').css("font-size", initFontSize);
+						Util.StorageSetter('font_size', initFontSize);							
+					});
 					// 减小字体
-					$('#small-font').click(function(){});
+					$('#small-font').click(function(){
+						if (initFontSize < 12) {
+							return
+						}
+						initFontSize -= 1;
+						$("#fiction_container").css('font-size', initFontSize);
+						Util.StorageSetter('font_size', initFontSize);
+					});
 
 
 
