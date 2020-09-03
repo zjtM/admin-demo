@@ -6,7 +6,7 @@ Vue.use(VueRouter)
 
 const Login = () => import('../view/login.vue')
 const Home = () => import('../view/home.vue')
-const Users = () => import('@/view/users.vue')
+const Users = () => import('@/view/users/index.vue')
 
 const router = new VueRouter({
     routes: [ 
@@ -46,7 +46,7 @@ router.beforeEach((to, from, next) => {
         if (!token) { //没有这个会进入router死循环
             next('/login')
         }else{
-            next({...to, replace:true}) //使用replace不会产生历史
+            next() 
         }
     }
 })

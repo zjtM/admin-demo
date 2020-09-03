@@ -28,7 +28,9 @@ server.interceptors.request.use(
 
 server.interceptors.response.use(response => {
     const res = response.data
-    if (res.meta.status !== 200) {
+    if (res.meta.status == 201 || res.meta.status == 204 || res.meta.status == 200) {
+        Message.success(res.meta.msg)
+    }else{
         Message.error(res.meta.msg)
     }
     return response
