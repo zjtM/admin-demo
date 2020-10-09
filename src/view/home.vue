@@ -60,7 +60,6 @@ import {getMenu} from '@/api/index.js'
    methods:{
      async getMenuList(){
        const {data : res} = await getMenu()
-       console.log(res);
        this.menuList = res.data
      },
 

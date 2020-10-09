@@ -44,7 +44,7 @@ export function fixUsers(params){
 // 用户详情
 export function userDetile(params){
     return $http({
-        url:`/users/${params.id}`,
+        url:`/users/${params}`,
         method:'get'
     })
 }
@@ -59,7 +59,7 @@ export function userEdit(params){
 //删除用户
 export function userDelete(params){
     return $http({
-        url:`/users/${params.id}`,
+        url:`/users/${params}`,
         method:'delete'
     })
 }
@@ -69,5 +69,21 @@ export function setRole(params){
         url:`/users/${params.id}`,
         method:'put',
         params
+    })
+}
+
+//权限列表
+export function rights(params){
+    return $http({
+        url:`rights/${params}`,
+        method:'get'
+    })
+}
+
+// 角色列表
+export function roles(){
+    return $http({
+        url:`/roles`,
+        method:'get'
     })
 }

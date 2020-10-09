@@ -29,7 +29,7 @@
           ></el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="mg_state" label="是否启用">
+      <el-table-column prop="mg_state" label="操作">
         <template slot-scope="scope">
           <el-button @click="handleEdit(scope.row)" type="text" size="small">查看</el-button>
           <el-button @click="handeDel(scope.row)" type="text" size="small">删除</el-button>
@@ -53,16 +53,20 @@
 
     <!-- 添加用户信息 -->
     <add-user v-model="dialogFormVisible" @RefreshTableList='getUserList'></add-user>
+    <!-- 编辑查看用户信息 -->
+    <edit-user :userInfo='userInfo' v-model="EditVisible" @editConfirm='editConfirm'></edit-user>
   </div>
 </template>
 
 <script>
-import { Users, fixUsers, addUsers } from "@/api/index.js";
+import { Users, fixUsers, addUsers , userDelete, userDetile} from "@/api/index.js";
 import AddUser from './addUser'
+import EditUser from './edit'
+
 
 export default {
   name: "Users",
-  components: {AddUser},
+  components: {AddUser,EditUser},
   data() {
     return {
       userList: [],
@@ -80,14 +84,16 @@ export default {
         state: true,
       },
       input:'',
+      userInfo:{},
  
       // 弹出框
       dialogFormVisible:false,
+      EditVisible:false
 
     };
   },
   created() {
-    // this.getUserList();
+    this.getUserList();
   },
   methods: {
     // 获取用户列表
@@ -126,12 +132,29 @@ export default {
     // 查询
     handleSearch(){
       this.pageConfig.query = this.input
+      this.pageConfig.pagenum = 1
       this.getUserList()
     },
     //编辑
-    handleEdit(row){},
+    async handleEdit(row){
+      let {data:res} = await userDetile(row.id)
+      this.userInfo = res.data
+      this.EditVisible = true
+    },
+    editConfirm(val){
+      this.$message.success(val)
+      this.getUserList()
+    },
     // 删除
-    handeDel(row){}
+    async handeDel(row){
+      let {data : res} = await userDelete(row.id)
+      if (res.meta.status == 200) {
+        this.$message.success(res.meta.msg)
+      }else{
+        this.$message.success(res.meta.msg)
+      }
+
+    }
   },
 };
 </script>
